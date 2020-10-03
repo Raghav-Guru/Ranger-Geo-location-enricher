@@ -2,6 +2,7 @@
 
 This doc provides the steps to use RangerFileBasedGeolocationProvider to enforce ranger policies based on user’s location identified based on pre-defined IP to location mapping file.  This feature was implemented in Ranger 0.6.0 RANGER-596. 
 
+### Enable RangerFileBasedGeoLocationProvider in Ranger admin: 
 
 **Step 1:** Update the hive service definition : 
 
@@ -53,7 +54,7 @@ IP_FROM,IP_TO,COUNTRY_CODE,COUNTRY_NAME,REGION,CITY
 ```
 
 
-**Note: ** This file should exists on the plugin service (here on HS2 server) as the policy is enforced at plugin, plugin will re-read this geo.txt when a policy is updated. 
+**Note:** This file should exists on the plugin service (here on HS2 server) as the policy is enforced at plugin, plugin will re-read this geo.txt when a policy is updated. 
 
 To add a new IP address to this file, make sure that hive policy is updated (any change to trigger sync, every time geo.txt is updated). This step is required as there is no watcher implemented on geo enricher source file so modifications to this file are not auto loaded by plugin. 
 
@@ -65,7 +66,7 @@ To add a new IP address to this file, make sure that hive policy is updated (any
 #curl -u admin  -H 'Content-Type: application/json'  -X PUT -d @./hive_servicedef_geolocation.json 'http://c416-node4.coelab.cloudera.com:6080/service/public/v2/api/servicedef/name/hive' -v
 ```
 
-#### Adding hive policy to test geo location based policies: 
+### Adding hive policy to test geo location based policies: 
 
 Create a hive policy as below in ranger UI : 
 
@@ -95,6 +96,8 @@ Create a hive policy as below in ranger UI :
 
 > Permissions : All 
 
+
+![Ranger location based policy ](geotest_policy.png)
 
 With the above policy created, user hr1 is allowed to access from IP address which is outside IN (from geo.txt all the IPs mapped to US location, so this condition should be enforced when user access atlas_hook_table table from any of the mapped IPs).
 
@@ -132,6 +135,7 @@ Error: Error while compiling statement: FAILED: HiveAccessControlException Permi
 Review the Ranger audit to confirm the denied condition enforced. 
 
 
+![Ranger location based policy denied access](ranger_audit_denied.png)
 
 Access from IP address 172.xyz.xyz.68 which is mapped to location US in geo.txt. 
 
@@ -175,7 +179,9 @@ Confirming the current user :
 1 row selected (0.154 seconds)
 ```
 
-
+![Ranger location based policy allowed access](ranger_audit_allowed.png)
 
 Review the audit logs from ranger UI to confirm  same policy enforced for user hr1 for Allow and denied access but when accessed from different client IP. 
 
+
+Above test confirms Ranger geo policy is enforced and same user accessing same resources  from two different client IPs has two different policies enforced. 
