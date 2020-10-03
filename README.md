@@ -134,7 +134,7 @@ Error: Error while compiling statement: FAILED: HiveAccessControlException Permi
 
 Review the Ranger audit to confirm the denied condition enforced. 
 
-
+![Ranger location based policy denied access](ranger_audit_denied.png)
 
 
 Access from IP address 172.xyz.xyz.68 which is mapped to location US in geo.txt. 
@@ -179,7 +179,7 @@ Confirming the current user :
 1 row selected (0.154 seconds)
 ```
 
-
+![Ranger location based policy allowed access](ranger_audit_allowed.png)
 
 Review the audit logs from ranger UI to confirm  same policy enforced for user hr1 for Allow and denied access but when accessed from different client IP. 
 
