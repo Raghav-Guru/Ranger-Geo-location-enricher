@@ -105,7 +105,7 @@ With the above policy created, user hr1 is allowed to access from IP address whi
 
 Access from IP address 172.xyz.xyz.194, which is not mapped or mentioned in geo.txt , without mapping this IP is non-US or outside US and matches our policy to deny: 
 
-**Test 1:**  Access HS2 as user hr1  using beeline shell : 
+Access HS2 as user hr1  using beeline shell : 
 
 ```
 0: jdbc:hive2://c416-node2.coelab.cloudera.co> !sh ip addr
